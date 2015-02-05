@@ -1,0 +1,34 @@
+install mysql
+mysql -u root -p
+create database currencyDB;
+use currencyDB;
+CREATE USER 'currUser'@'localhost' IDENTIFIED BY 'currPass';
+GRANT ALL PRIVILEGES ON currencyDB.* TO currUser@localhost;
+FLUSH PRIVILEGES;
+
+USE currencyDB;
+
+ create table money_transaction (
+        id integer not null auto_increment,
+        amount_buy decimal(19,2) not null,
+        amount_sell decimal(19,2) not null,
+        currency_from varchar(255) not null,
+        currency_to varchar(255) not null,
+        originating_country varchar(255) not null,
+        rate double precision not null,
+        time_placed datetime not null,
+        user_id integer,
+        primary key (id)
+    );
+ 
+create table user (
+        id integer not null auto_increment,
+        name varchar(255) not null,
+        primary key (id)
+    );
+
+ alter table money_transaction 
+        add constraint FK_a74vbaqnmcmvned9y1nntlnvp 
+        foreign key (user_id) 
+        references user (id);
+create index idx_trans_user_id on money_transaction(user_id);
